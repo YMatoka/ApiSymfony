@@ -15,7 +15,8 @@ class UsersController extends FOSRestController
 {
     private $userRepository;
     private $em;
-    public function __construct(UserRepository $userRepository)
+
+    public function __construct(UserRepository $userRepository, EntityManagerInterface $em)
     {
         $this->userRepository = $userRepository;
         $this->em =$em;
@@ -45,7 +46,19 @@ class UsersController extends FOSRestController
         return $this->view($user);
        } // "post_users"           [POST] /users
     public function putUserAction($id)
-       {} // "put_user"             [PUT] /users/{id}
-    public function deleteUserAction($id)
-       {} // "delete_user"          [DELETE] /users/{id
+       {
+            $request->get('firstname');
+            $users->setfirstname('firstname');
+            $request->get('lastname');
+            $users->setfirstname('lastname');
+            $request->get('email');
+            $users->setfirstname('email');
+            $this->em->persist($user);
+            $this->em->flush;
+       } // "put_user"             [PUT] /users/{id}
+    public function deleteUserAction(User $user)
+       {
+        $this->em->remove($user);
+        $this->em->flush;
+       } // "delete_user"          [DELETE] /users/{id
 }
